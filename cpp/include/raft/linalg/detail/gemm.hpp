@@ -130,6 +130,7 @@ void legacy_gemm(raft::resources const& res,
                  const s_T* beta)
 {
   if (isZColMajor) {
+    std::cout << "we eventually call legacy_matmul\n";
     return legacy_matmul<DevicePointerMode, s_T, x_T, y_T, z_T>(
       res,
       !isXColMajor,
@@ -147,6 +148,7 @@ void legacy_gemm(raft::resources const& res,
       static_cast<uint64_t>(_M),
       stream);
   } else {
+    std::cout << "we eventually call legacy_gemm\n";
     return legacy_gemm<x_T, y_T, z_T, s_T, DevicePointerMode>(
       res, z, y, x, _N, _M, _K, true, !isYColMajor, !isXColMajor, stream, alpha, beta);
   }
