@@ -183,11 +183,11 @@ void gemm(raft::resources const& handle,
 template <typename z_T, typename x_T, typename y_T, typename s_T = z_T>
 void gemm(raft::resources const& handle,
           z_T* z,
-          x_T* x,
-          y_T* y,
-          int _M,
-          int _N,
-          int _K,
+          x_T* x,  // query (sizes vary)
+          y_T* y,  // original (fixed to # data)
+          int _M,  // vary
+          int _N,  // original # data
+          int _K,  // dim of data
           bool isZColMajor,
           bool isXColMajor,
           bool isYColMajor,
@@ -195,6 +195,8 @@ void gemm(raft::resources const& handle,
           s_T alpha = s_T(1.0),
           s_T beta  = s_T(0.0))
 {
+  std::cout << "we are calling this gemm in gemm.cuh " << isZColMajor << " " << isXColMajor << " "
+            << isYColMajor << std::endl;
   return detail::legacy_gemm<x_T, y_T, z_T, s_T, false>(
     handle, z, x, y, _M, _N, _K, isZColMajor, isXColMajor, isYColMajor, stream, &alpha, &beta);
 }
